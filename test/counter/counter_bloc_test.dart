@@ -21,12 +21,4 @@ void main() {
     act: (bloc) => bloc.add(const CounterDecremented()),
     expect: () => const [CounterState(count: -1)],
   );
-
-  blocTest<CounterBloc, CounterState>(
-    'CounterReset で count が 0 に戻る',
-    build: CounterBloc.new,
-    seed: () => const CounterState(count: 5),
-    act: (bloc) => bloc.add(const CounterReset()),
-    expect: () => const [CounterState(count: 0)],
-  );
 }

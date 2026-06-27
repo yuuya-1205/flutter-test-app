@@ -8,7 +8,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:flutter_test_app/main.dart';
 
 void main() {
-  testWidgets('Counter increments / decrements / resets', (
+  testWidgets('Counter increments / decrements', (
     WidgetTester tester,
   ) async {
     await tester.pumpWidget(const MyApp());
@@ -23,17 +23,6 @@ void main() {
 
     // 減算 -> 0 に戻る。
     await tester.tap(find.byIcon(Icons.remove));
-    await tester.pump();
-    expect(find.text('0'), findsOneWidget);
-
-    // 数回加算してからリセット -> 0 に戻る。
-    await tester.tap(find.byIcon(Icons.add));
-    await tester.pump();
-    await tester.tap(find.byIcon(Icons.add));
-    await tester.pump();
-    expect(find.text('2'), findsOneWidget);
-
-    await tester.tap(find.byIcon(Icons.refresh));
     await tester.pump();
     expect(find.text('0'), findsOneWidget);
   });

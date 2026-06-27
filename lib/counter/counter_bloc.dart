@@ -21,11 +21,6 @@ class CounterDecremented extends CounterEvent {
   const CounterDecremented();
 }
 
-/// 初期値（0）へのリセットイベント。
-class CounterReset extends CounterEvent {
-  const CounterReset();
-}
-
 // ===== State =====
 
 /// カウンターの状態。
@@ -45,18 +40,21 @@ class CounterBloc extends Bloc<CounterEvent, CounterState> {
   CounterBloc() : super(const CounterState()) {
     on<CounterIncremented>(_onIncremented);
     on<CounterDecremented>(_onDecremented);
-    on<CounterReset>(_onReset);
   }
 
   void _onIncremented(CounterIncremented event, Emitter<CounterState> emit) {
-    emit(CounterState(count: state.count + 1));
+    emit(_stateOf(_movedBy(1)));
   }
 
   void _onDecremented(CounterDecremented event, Emitter<CounterState> emit) {
-    emit(CounterState(count: state.count - 1));
+    emit(_stateOf(_movedBy(-1)));
   }
 
-  void _onReset(CounterReset event, Emitter<CounterState> emit) {
-    emit(const CounterState());
-  }
+  // ---- ヘルパー関数 ----
+
+  /// 現在値を [delta] だけ動かした値を返す。
+  int _movedBy(int delta) => state.count + delta;
+
+  /// カウント値から [CounterState] を組み立てる。
+  CounterState _stateOf(int count) => CounterState(count: count);
 }
