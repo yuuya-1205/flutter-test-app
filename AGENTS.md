@@ -8,29 +8,25 @@
 
 - Dart / Flutter 製のクロスプラットフォームアプリ（Android / iOS / Web / Linux / macOS / Windows）です。
 - Flutter SDK は `^3.9.2` を前提とします。
-- 状態管理は BLoC（`flutter_bloc` / `bloc`）+ Equatable、設計は Clean Architecture を採用しています。
+- 状態管理は BLoC（`flutter_bloc` / `bloc`）+ Equatable を採用したシンプルな構成です。
 
 ## 2. アーキテクチャ / ディレクトリ構成
 
-機能ごとに `lib/features/<feature>/` を切り、その内部を Clean Architecture の3層に分けます。
-依存方向は常に「presentation / data → domain」へ向きます（domain は他層に依存しない）。
+機能ごとに `lib/<feature>/` を切り、Bloc と画面をまとめます。
+Event・State・Bloc は1つの `*_bloc.dart` に集約します。
 
 ```txt
 lib/
-  main.dart                         # 起動地点・依存性の注入(DI)
-  features/counter/
-    domain/                         # ビジネスルール（他層に非依存）
-      entities/counter.dart         #   エンティティ（Equatable）
-    presentation/                   # UI と状態管理
-      bloc/                         #   Bloc / Event / State（計算・ヘルパーは Bloc 内）
-      facade/                       #   Facade（UI への簡易窓口）
-      pages/                        #   画面ウィジェット
-test/                               # lib/ と同じ構成でテストを配置
+  main.dart                  # 起動地点・BlocProvider の設定
+  counter/
+    counter_bloc.dart        # Event / State / Bloc（同一ファイルにまとめる）
+    counter_page.dart        # 画面ウィジェット
+test/                        # lib/ と同じ構成でテストを配置
 ```
 
-- 加算・減算・リセットの計算と状態の保持は **Bloc** が担います。
-- UI は Bloc のイベントを直接 add せず、**Facade** 越しに操作します。
-- 状態やその派生値（偶奇など）の組み立てヘルパーは **Bloc 内**に閉じ込めます。
+- 状態の保持と更新は **Bloc** が担います。
+- UI は `context.read<CounterBloc>().add(...)` でイベントを送り、`BlocBuilder` で状態を購読します。
+- Event / State は `Equatable` で値比較できるようにします。
 - ネイティブ設定（`android/`, `ios/` など）は必要な場合のみ変更します。
 - 依存パッケージの追加・更新は `pubspec.yaml` を介して行います。
 

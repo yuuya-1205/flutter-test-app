@@ -1,13 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../bloc/counter_bloc.dart';
-import '../facade/counter_facade.dart';
+import 'counter_bloc.dart';
 
 /// カウンター画面。
 ///
-/// 状態の購読は [BlocBuilder] が、操作は [CounterFacade] が担当する。
-/// 画面は Bloc のイベントを直接知らない（Facade 越しに操作する）。
+/// 状態の購読は [BlocBuilder]、操作は `context.read<CounterBloc>().add(...)` で行う。
 class CounterPage extends StatelessWidget {
   const CounterPage({super.key, required this.title});
 
@@ -15,8 +13,6 @@ class CounterPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final facade = CounterFacade(context.read<CounterBloc>());
-
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
@@ -33,10 +29,6 @@ class CounterPage extends StatelessWidget {
                   '${state.count}',
                   style: Theme.of(context).textTheme.headlineMedium,
                 ),
-                Text(
-                  state.isEven ? 'even' : 'odd',
-                  style: Theme.of(context).textTheme.bodyMedium,
-                ),
               ],
             );
           },
@@ -48,21 +40,24 @@ class CounterPage extends StatelessWidget {
         children: <Widget>[
           FloatingActionButton(
             heroTag: 'increment',
-            onPressed: facade.increment,
+            onPressed: () =>
+                context.read<CounterBloc>().add(const CounterIncremented()),
             tooltip: 'Increment',
             child: const Icon(Icons.add),
           ),
           const SizedBox(height: 8),
           FloatingActionButton(
             heroTag: 'decrement',
-            onPressed: facade.decrement,
+            onPressed: () =>
+                context.read<CounterBloc>().add(const CounterDecremented()),
             tooltip: 'Decrement',
             child: const Icon(Icons.remove),
           ),
           const SizedBox(height: 8),
           FloatingActionButton(
             heroTag: 'reset',
-            onPressed: facade.reset,
+            onPressed: () =>
+                context.read<CounterBloc>().add(const CounterReset()),
             tooltip: 'Reset',
             child: const Icon(Icons.refresh),
           ),

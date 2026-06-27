@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import 'features/counter/presentation/bloc/counter_bloc.dart';
-import 'features/counter/presentation/pages/counter_page.dart';
+import 'counter/counter_bloc.dart';
+import 'counter/counter_page.dart';
 
 void main() {
   runApp(const MyApp());
