@@ -29,7 +29,7 @@ void main() {
 
   setUpAll(() {
     // any() で Counter を扱うためのフォールバック値を登録する。
-    registerFallbackValue(const Counter.initial());
+    registerFallbackValue(const Counter(value: 0));
   });
 
   setUp(() {
@@ -107,7 +107,7 @@ void main() {
     blocTest<CounterBloc, CounterState>(
       '初期状態（0 / even）を emit する',
       setUp: () {
-        when(resetCounter.call).thenReturn(const Counter.initial());
+        when(resetCounter.call).thenReturn(const Counter(value: 0));
       },
       build: buildBloc,
       // 初期状態と同一の状態は emit されないため、非初期状態を seed してから

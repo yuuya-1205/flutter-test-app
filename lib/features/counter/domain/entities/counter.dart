@@ -6,9 +6,6 @@ import 'package:equatable/equatable.dart';
 class Counter extends Equatable {
   const Counter({required this.value});
 
-  /// 初期状態（0）のカウンター。
-  const Counter.initial() : value = 0;
-
   final int value;
 
   @override

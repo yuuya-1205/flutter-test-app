@@ -6,6 +6,6 @@ class ResetCounter {
 
   /// 初期状態の [Counter] を返す。
   Counter call() {
-    return const Counter.initial();
+    return const Counter(value: 0);
   }
 }

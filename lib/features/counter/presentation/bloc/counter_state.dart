@@ -17,13 +17,6 @@ class CounterState extends Equatable {
 
   bool get isEven => parity == CounterParity.even;
 
-  CounterState copyWith({int? count, CounterParity? parity}) {
-    return CounterState(
-      count: count ?? this.count,
-      parity: parity ?? this.parity,
-    );
-  }
-
   @override
   List<Object?> get props => [count, parity];
 }
