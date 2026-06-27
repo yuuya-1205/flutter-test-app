@@ -24,7 +24,7 @@ lib/
 test/                        # lib/ と同じ構成でテストを配置
 ```
 
-- 状態の保持と更新は **Bloc** が担い、状態の組み立てなどのヘルパー関数は **Bloc 内**に置きます。
+- 状態の保持と更新は **Bloc** が担います。
 - UI は Bloc のイベントを直接 add せず、Bloc が公開する `increment()` / `decrement()` を呼び出します（`BlocBuilder` で状態を購読）。
 - Event / State は `Equatable` で値比較できるようにします。
 - ネイティブ設定（`android/`, `ios/` など）は必要な場合のみ変更します。

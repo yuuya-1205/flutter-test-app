@@ -49,18 +49,10 @@ class CounterBloc extends Bloc<CounterEvent, CounterState> {
   void decrement() => add(const CounterDecremented());
 
   void _onIncremented(CounterIncremented event, Emitter<CounterState> emit) {
-    emit(_stateOf(_movedBy(1)));
+    emit(CounterState(count: state.count + 1));
   }
 
   void _onDecremented(CounterDecremented event, Emitter<CounterState> emit) {
-    emit(_stateOf(_movedBy(-1)));
+    emit(CounterState(count: state.count - 1));
   }
-
-  // ---- ヘルパー関数 ----
-
-  /// 現在値を [delta] だけ動かした値を返す。
-  int _movedBy(int delta) => state.count + delta;
-
-  /// カウント値から [CounterState] を組み立てる。
-  CounterState _stateOf(int count) => CounterState(count: count);
 }
