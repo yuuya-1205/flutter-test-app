@@ -2,12 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'counter_bloc.dart';
-import 'counter_facade.dart';
 
 /// カウンター画面。
 ///
-/// 状態の購読は [BlocBuilder]、操作は [CounterFacade] 越しに行う
-/// （画面は Bloc のイベントを直接知らない）。
+/// 状態の購読は [BlocBuilder]、操作は [CounterBloc] の `increment()` /
+/// `decrement()` を通じて行う（画面は Bloc のイベントを直接知らない）。
 class CounterPage extends StatelessWidget {
   const CounterPage({super.key, required this.title});
 
@@ -15,7 +14,7 @@ class CounterPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final facade = CounterFacade(context.read<CounterBloc>());
+    final bloc = context.read<CounterBloc>();
 
     return Scaffold(
       appBar: AppBar(
@@ -44,14 +43,14 @@ class CounterPage extends StatelessWidget {
         children: <Widget>[
           FloatingActionButton(
             heroTag: 'increment',
-            onPressed: facade.increment,
+            onPressed: bloc.increment,
             tooltip: 'Increment',
             child: const Icon(Icons.add),
           ),
           const SizedBox(height: 8),
           FloatingActionButton(
             heroTag: 'decrement',
-            onPressed: facade.decrement,
+            onPressed: bloc.decrement,
             tooltip: 'Decrement',
             child: const Icon(Icons.remove),
           ),

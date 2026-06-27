@@ -20,13 +20,12 @@ lib/
   main.dart                  # 起動地点・BlocProvider の設定
   counter/
     counter_bloc.dart        # Event / State / Bloc（同一ファイルにまとめる）
-    counter_facade.dart      # Facade（UI への簡易窓口）
     counter_page.dart        # 画面ウィジェット
 test/                        # lib/ と同じ構成でテストを配置
 ```
 
 - 状態の保持と更新は **Bloc** が担い、状態の組み立てなどのヘルパー関数は **Bloc 内**に置きます。
-- UI は Bloc のイベントを直接 add せず、**Facade** 越しに操作します（`BlocBuilder` で状態を購読）。
+- UI は Bloc のイベントを直接 add せず、Bloc が公開する `increment()` / `decrement()` を呼び出します（`BlocBuilder` で状態を購読）。
 - Event / State は `Equatable` で値比較できるようにします。
 - ネイティブ設定（`android/`, `ios/` など）は必要な場合のみ変更します。
 - 依存パッケージの追加・更新は `pubspec.yaml` を介して行います。
