@@ -43,14 +43,20 @@ class CounterState extends Equatable {
 /// カウンターの状態管理を担う Bloc。
 class CounterBloc extends Bloc<CounterEvent, CounterState> {
   CounterBloc() : super(const CounterState()) {
-    on<CounterIncremented>((event, emit) {
-      emit(CounterState(count: state.count + 1));
-    });
-    on<CounterDecremented>((event, emit) {
-      emit(CounterState(count: state.count - 1));
-    });
-    on<CounterReset>((event, emit) {
-      emit(const CounterState());
-    });
+    on<CounterIncremented>(_onIncremented);
+    on<CounterDecremented>(_onDecremented);
+    on<CounterReset>(_onReset);
+  }
+
+  void _onIncremented(CounterIncremented event, Emitter<CounterState> emit) {
+    emit(CounterState(count: state.count + 1));
+  }
+
+  void _onDecremented(CounterDecremented event, Emitter<CounterState> emit) {
+    emit(CounterState(count: state.count - 1));
+  }
+
+  void _onReset(CounterReset event, Emitter<CounterState> emit) {
+    emit(const CounterState());
   }
 }
