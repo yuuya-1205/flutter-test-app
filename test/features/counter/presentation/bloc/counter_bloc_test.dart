@@ -27,6 +27,11 @@ void main() {
     );
   }
 
+  setUpAll(() {
+    // any() で Counter を扱うためのフォールバック値を登録する。
+    registerFallbackValue(const Counter.initial());
+  });
+
   setUp(() {
     incrementCounter = MockIncrementCounter();
     decrementCounter = MockDecrementCounter();
@@ -39,10 +44,10 @@ void main() {
 
   group('CounterIncremented', () {
     blocTest<CounterBloc, CounterState>(
-      'odd の状態を emit し、ユースケースを step つきで呼び出す',
+      'odd の状態を emit し、現在値とともにユースケースを呼び出す',
       setUp: () {
         when(
-          () => incrementCounter(step: any(named: 'step')),
+          () => incrementCounter(any(), step: any(named: 'step')),
         ).thenReturn(const Counter(value: 1));
       },
       build: buildBloc,
@@ -51,7 +56,9 @@ void main() {
         CounterState(count: 1, parity: CounterParity.odd),
       ],
       verify: (_) {
-        verify(() => incrementCounter(step: 1)).called(1);
+        verify(
+          () => incrementCounter(const Counter(value: 0), step: 1),
+        ).called(1);
       },
     );
 
@@ -59,7 +66,7 @@ void main() {
       'step を指定すると even の状態（2）を emit する',
       setUp: () {
         when(
-          () => incrementCounter(step: any(named: 'step')),
+          () => incrementCounter(any(), step: any(named: 'step')),
         ).thenReturn(const Counter(value: 2));
       },
       build: buildBloc,
@@ -68,7 +75,9 @@ void main() {
         CounterState(count: 2, parity: CounterParity.even),
       ],
       verify: (_) {
-        verify(() => incrementCounter(step: 2)).called(1);
+        verify(
+          () => incrementCounter(const Counter(value: 0), step: 2),
+        ).called(1);
       },
     );
   });
@@ -78,7 +87,7 @@ void main() {
       '減算後の状態を emit する',
       setUp: () {
         when(
-          () => decrementCounter(step: any(named: 'step')),
+          () => decrementCounter(any(), step: any(named: 'step')),
         ).thenReturn(const Counter(value: -1));
       },
       build: buildBloc,
@@ -87,7 +96,9 @@ void main() {
         CounterState(count: -1, parity: CounterParity.odd),
       ],
       verify: (_) {
-        verify(() => decrementCounter(step: 1)).called(1);
+        verify(
+          () => decrementCounter(const Counter(value: 0), step: 1),
+        ).called(1);
       },
     );
   });

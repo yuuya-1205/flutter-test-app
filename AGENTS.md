@@ -21,10 +21,7 @@ lib/
   features/counter/
     domain/                         # ビジネスルール（他層に非依存）
       entities/counter.dart         #   エンティティ（Equatable）
-      repositories/                 #   リポジトリの抽象インターフェース
       usecases/                     #   ユースケース（increment/decrement/reset）
-    data/                           # ドメインの実装詳細
-      repositories/                 #   リポジトリ実装（メモリ保持）
     presentation/                   # UI と状態管理
       bloc/                         #   Bloc / Event / State（ヘルパー関数は Bloc 内）
       facade/                       #   Facade（UI への簡易窓口）
@@ -32,6 +29,7 @@ lib/
 test/                               # lib/ と同じ構成でテストを配置
 ```
 
+- ユースケースは状態を保持しない純粋な操作とし、状態の保持は **Bloc** が担います。
 - UI は Bloc のイベントを直接 add せず、**Facade** 越しに操作します。
 - 状態やその派生値（偶奇など）の組み立てヘルパーは **Bloc 内**に閉じ込めます。
 - ネイティブ設定（`android/`, `ios/` など）は必要な場合のみ変更します。

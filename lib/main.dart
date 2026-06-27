@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import 'features/counter/data/repositories/in_memory_counter_repository.dart';
-import 'features/counter/domain/repositories/counter_repository.dart';
 import 'features/counter/domain/usecases/decrement_counter.dart';
 import 'features/counter/domain/usecases/increment_counter.dart';
 import 'features/counter/domain/usecases/reset_counter.dart';
@@ -18,9 +16,6 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // データ層の実装を組み立てる（依存性の注入はここに集約する）。
-    final CounterRepository repository = InMemoryCounterRepository();
-
     return MaterialApp(
       title: 'Flutter Demo',
       theme: ThemeData(
@@ -28,9 +23,9 @@ class MyApp extends StatelessWidget {
       ),
       home: BlocProvider(
         create: (_) => CounterBloc(
-          incrementCounter: IncrementCounter(repository),
-          decrementCounter: DecrementCounter(repository),
-          resetCounter: ResetCounter(repository),
+          incrementCounter: const IncrementCounter(),
+          decrementCounter: const DecrementCounter(),
+          resetCounter: const ResetCounter(),
         ),
         child: const CounterPage(title: 'Flutter Demo Home Page'),
       ),

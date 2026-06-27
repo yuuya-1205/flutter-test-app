@@ -1,17 +1,14 @@
 import '../entities/counter.dart';
-import '../repositories/counter_repository.dart';
 
 /// カウンターを減算するユースケース。
+///
+/// 状態の保持は行わず、現在の [Counter] を受け取って減算後の [Counter] を返す
+/// 純粋な操作。状態の保持は呼び出し側（Bloc）の責務とする。
 class DecrementCounter {
-  const DecrementCounter(this._repository);
+  const DecrementCounter();
 
-  final CounterRepository _repository;
-
-  /// [step] だけ減算し、更新後のカウンターを返す。
-  Counter call({int step = 1}) {
-    final current = _repository.getCounter();
-    final updated = Counter(value: current.value - step);
-    _repository.saveCounter(updated);
-    return updated;
+  /// [current] を [step] だけ減算した新しい [Counter] を返す。
+  Counter call(Counter current, {int step = 1}) {
+    return Counter(value: current.value - step);
   }
 }

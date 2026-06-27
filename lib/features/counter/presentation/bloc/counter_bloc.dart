@@ -33,12 +33,12 @@ class CounterBloc extends Bloc<CounterEvent, CounterState> {
   final ResetCounter _resetCounter;
 
   void _onIncremented(CounterIncremented event, Emitter<CounterState> emit) {
-    final counter = _incrementCounter(step: event.step);
+    final counter = _incrementCounter(_currentCounter, step: event.step);
     emit(_stateFrom(counter));
   }
 
   void _onDecremented(CounterDecremented event, Emitter<CounterState> emit) {
-    final counter = _decrementCounter(step: event.step);
+    final counter = _decrementCounter(_currentCounter, step: event.step);
     emit(_stateFrom(counter));
   }
 
@@ -48,6 +48,9 @@ class CounterBloc extends Bloc<CounterEvent, CounterState> {
   }
 
   // ---- ヘルパー関数（Bloc 内に実装） ----
+
+  /// 現在の状態（[CounterState]）からドメインの [Counter] を組み立てる。
+  Counter get _currentCounter => Counter(value: state.count);
 
   /// ドメインの [Counter] から画面用の [CounterState] を組み立てる。
   CounterState _stateFrom(Counter counter) {
