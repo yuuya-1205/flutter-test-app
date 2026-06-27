@@ -1,9 +1,7 @@
-// This is a basic Flutter widget test.
+// カウンター画面のウィジェットテスト。
 //
-// To perform an interaction with a widget in your test, use the WidgetTester
-// utility in the flutter_test package. For example, you can send tap and scroll
-// gestures. You can also use WidgetTester to find child widgets in the widget
-// tree, read text, and verify that the values of widget properties are correct.
+// 実際の依存（InMemoryCounterRepository + 各ユースケース + CounterBloc）を
+// 組み込んだ MyApp を起動し、UI 操作で状態が変化することを確認する。
 
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -11,20 +9,37 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:flutter_test_app/main.dart';
 
 void main() {
-  testWidgets('Counter increments smoke test', (WidgetTester tester) async {
-    // Build our app and trigger a frame.
+  testWidgets('Counter increments / decrements / resets', (
+    WidgetTester tester,
+  ) async {
     await tester.pumpWidget(const MyApp());
 
-    // Verify that our counter starts at 0.
+    // 初期値は 0（偶数）。
     expect(find.text('0'), findsOneWidget);
-    expect(find.text('1'), findsNothing);
+    expect(find.text('even'), findsOneWidget);
 
-    // Tap the '+' icon and trigger a frame.
+    // 加算 -> 1（奇数）。
     await tester.tap(find.byIcon(Icons.add));
     await tester.pump();
-
-    // Verify that our counter has incremented.
-    expect(find.text('0'), findsNothing);
     expect(find.text('1'), findsOneWidget);
+    expect(find.text('odd'), findsOneWidget);
+
+    // 減算 -> 0（偶数）に戻る。
+    await tester.tap(find.byIcon(Icons.remove));
+    await tester.pump();
+    expect(find.text('0'), findsOneWidget);
+    expect(find.text('even'), findsOneWidget);
+
+    // 数回加算してからリセット -> 0 に戻る。
+    await tester.tap(find.byIcon(Icons.add));
+    await tester.pump();
+    await tester.tap(find.byIcon(Icons.add));
+    await tester.pump();
+    expect(find.text('2'), findsOneWidget);
+
+    await tester.tap(find.byIcon(Icons.refresh));
+    await tester.pump();
+    expect(find.text('0'), findsOneWidget);
+    expect(find.text('even'), findsOneWidget);
   });
 }

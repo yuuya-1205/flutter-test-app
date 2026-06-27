@@ -8,22 +8,32 @@
 
 - Dart / Flutter 製のクロスプラットフォームアプリ（Android / iOS / Web / Linux / macOS / Windows）です。
 - Flutter SDK は `^3.9.2` を前提とします。
-- 現状は Flutter 標準のカウンターサンプルをベースとした学習・検証用プロジェクトです。
+- 状態管理は BLoC（`flutter_bloc` / `bloc`）+ Equatable、設計は Clean Architecture を採用しています。
 
 ## 2. アーキテクチャ / ディレクトリ構成
 
+機能ごとに `lib/features/<feature>/` を切り、その内部を Clean Architecture の3層に分けます。
+依存方向は常に「presentation / data → domain」へ向きます（domain は他層に依存しない）。
+
 ```txt
 lib/
-  main.dart         # アプリの起動地点・ルートウィジェット
-test/
-  widget_test.dart  # ウィジェット／ユニットテスト
-android/ ios/ web/   # 各プラットフォーム固有のネイティブ設定
-linux/ macos/ windows/
-pubspec.yaml        # 依存関係・アセットの定義
-analysis_options.yaml # 静的解析(lint)ルール
+  main.dart                         # 起動地点・依存性の注入(DI)
+  features/counter/
+    domain/                         # ビジネスルール（他層に非依存）
+      entities/counter.dart         #   エンティティ（Equatable）
+      repositories/                 #   リポジトリの抽象インターフェース
+      usecases/                     #   ユースケース（increment/decrement/reset）
+    data/                           # ドメインの実装詳細
+      repositories/                 #   リポジトリ実装（メモリ保持）
+    presentation/                   # UI と状態管理
+      bloc/                         #   Bloc / Event / State（ヘルパー関数は Bloc 内）
+      facade/                       #   Facade（UI への簡易窓口）
+      pages/                        #   画面ウィジェット
+test/                               # lib/ と同じ構成でテストを配置
 ```
 
-- UI は Flutter のウィジェットツリーで構成し、画面ロジックは `lib/` 配下にまとめます。
+- UI は Bloc のイベントを直接 add せず、**Facade** 越しに操作します。
+- 状態やその派生値（偶奇など）の組み立てヘルパーは **Bloc 内**に閉じ込めます。
 - ネイティブ設定（`android/`, `ios/` など）は必要な場合のみ変更します。
 - 依存パッケージの追加・更新は `pubspec.yaml` を介して行います。
 
