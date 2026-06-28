@@ -12,10 +12,7 @@ void main() {
     expect(const CounterIncremented(), const CounterIncremented());
     expect(const CounterDecremented(), const CounterDecremented());
     expect(const CounterState(count: 1), const CounterState(count: 1));
-    expect(
-      const CounterState(count: 1),
-      isNot(const CounterState(count: 2)),
-    );
+    expect(const CounterState(count: 1), isNot(const CounterState(count: 2)));
   });
 
   test('increment() / decrement() で状態が更新される', () async {
