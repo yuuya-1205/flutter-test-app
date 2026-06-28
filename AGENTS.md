@@ -98,3 +98,4 @@ Pull Request:
 - `README.md` … プロジェクトの概要・入門情報
 - `pubspec.yaml` … 依存関係・アセットの定義
 - `analysis_options.yaml` … 静的解析(lint)ルール
+- `docs/test-design-template.md` … テスト設計書のテンプレート（テスト実装の起点）
