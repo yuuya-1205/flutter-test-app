@@ -39,3 +39,22 @@ jobs:
           min_coverage: 100
           # アプリ起動のみで単体テスト不能な main() を含むブートストラップは除外する。
           exclude: "lib/main.dart"
+
+      # 情報表示のみ（ビルド合否には影響しない）。実行ページのサマリに掲示する。
+      - name: Metrics summary (cloc / tests)
+        if: always()
+        run: |
+          sudo apt-get update && sudo apt-get install -y cloc
+          test_count=$(grep -rhE "^[[:space:]]*(test|testWidgets|blocTest)[(<]" test --include='*.dart' | wc -l | tr -d ' ')
+          assert_count=$(grep -rhoE "\bexpect\(" test --include='*.dart' | wc -l | tr -d ' ')
+          {
+            echo "## メトリクス"
+            echo ""
+            echo "- テスト件数（ソース上の登録数）: ${test_count}"
+            echo "- アサーション数 (expect): ${assert_count}"
+            echo ""
+            echo "### cloc (lib / test)"
+            echo '```'
+            cloc lib test --quiet
+            echo '```'
+          } >> "$GITHUB_STEP_SUMMARY"
