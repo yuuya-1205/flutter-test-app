@@ -99,3 +99,4 @@ Pull Request:
 - `pubspec.yaml` … 依存関係・アセットの定義
 - `analysis_options.yaml` … 静的解析(lint)ルール
 - `docs/test-design-template.md` … テスト設計書のテンプレート（テスト実装の起点）
+- `tool/metrics.sh` … 物理KLOC / テスト件数 / テスト密度 / バグ密度を算出するスクリプト
