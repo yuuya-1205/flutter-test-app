@@ -1,19 +1,11 @@
 name: CI
 
 on:
-  # ドキュメントのみの変更（コードに影響しない）では CI を回さない。
-  # すべての変更ファイルが下記パターンに一致する場合、ジョブはスキップされる。
+  # public リポジトリでは GitHub Actions が無料・無制限のため、パスで絞らず
+  # すべての PR / push で CI を実行する（設定をシンプルに保ち、安全側に倒す）。
   pull_request:
-    paths-ignore:
-      - "**.md"
-      - "docs/**"
-      - ".claude/**"
   push:
     branches: [main]
-    paths-ignore:
-      - "**.md"
-      - "docs/**"
-      - ".claude/**"
 
 jobs:
   analyze-and-test:
