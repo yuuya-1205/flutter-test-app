@@ -13,6 +13,10 @@ void main() {
     expect(const CounterDecremented(), const CounterDecremented());
     expect(const CounterState(count: 1), const CounterState(count: 1));
     expect(const CounterState(count: 1), isNot(const CounterState(count: 2)));
+
+    // props を直接評価する（const 同士の == は identical で短絡し props を通らないため）。
+    expect(const CounterIncremented().props, isEmpty);
+    expect(const CounterDecremented().props, isEmpty);
   });
 
   test('increment() / decrement() で状態が更新される', () async {
