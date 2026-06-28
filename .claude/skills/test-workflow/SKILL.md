@@ -44,6 +44,8 @@ flutter analyze                       # 警告・エラー 0
 flutter test --coverage               # coverage/lcov.info を生成
 lcov --summary coverage/lcov.info     # カバレッジ率を確認（任意）
 # HTML レポート（任意）: genhtml coverage/lcov.info -o coverage/html
+tool/metrics.sh                       # 物理KLOC / テスト件数 / テスト密度 / バグ密度
+# バグがあれば: tool/metrics.sh <バグ件数>
 ```
 
 📊 ゲート
@@ -98,3 +100,7 @@ GitHub Actions（`.github/workflows/ci.yml`）が PR で自動実行する。
 | テスト失敗数 | `flutter test` | 0 |
 | flaky 率 | CI の再実行差分 | 0 |
 | レビュー未対応指摘 | PR | 0 |
+| 物理KLOC (lib) | `tool/metrics.sh` | 参考値 |
+| テスト件数 | `tool/metrics.sh` | 参考値 |
+| テスト密度（件/KLOC） | `tool/metrics.sh` | 下降させない |
+| バグ密度（件/KLOC） | `tool/metrics.sh <バグ件数>` | 下降トレンド維持 |
